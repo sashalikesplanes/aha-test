@@ -1,0 +1,20 @@
+---
+// export type JSONValue =
+//     | string
+//     | number
+//     | boolean
+//     | { [x: string]: JSONValue }
+//     | Array<JSONValue>;
+const { key, value, indent } = Astro.props;
+const valueIsPrimitive = Object(value) !== value;
+
+const PADDINGS = [ "pl-0", "pl-2", "pl-4", "pl-6", "pl-8"]
+console.log(indent)
+const padding = PADDINGS[indent] ?? "pl-8";
+---
+{valueIsPrimitive ?
+  <p class={padding}>{key}: <input value={value} /></p>
+  : Array.isArray(value) ?
+  value.map((v, idx) => <Astro.self value={v} key={idx} indent={+indent + 1}/>)
+  : <p class={padding}>{key}: {Object.entries(value).map(e => <Astro.self key={e[0]} value={e[1]} indent={+indent + 1}/>)}</p>
+}

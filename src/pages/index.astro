@@ -1,0 +1,38 @@
+---
+import fs from "node:fs";
+import Layout from "../layouts/Layout.astro"
+import Setting  from "../components/Setting.astro";
+
+try {
+  fs.accessSync("/tmp/settings.json")
+} catch {
+  const settings = {
+    base_color: "#ffffff",
+    number: 5,
+    color: "#000000",
+    test: {
+      t: 1,
+      tw: "2",
+    },
+    test2: [1, 2]
+  }
+  fs.writeFileSync("/tmp/settings.json", JSON.stringify(settings));
+}
+
+// const settings = JSON.parse(fs.readFileSync("/tmp/settings.json", "utf-8"));
+  const settings = {
+    base_color: "#ffffff",
+    temp: null,
+    number: 5,
+    color: "#000000",
+    test: {
+      t: 1,
+      tw: "2",
+    },
+    test2: [1, 2]
+  }
+
+---
+<Layout>
+<Setting key="Settings" value={settings} indent=0 />
+</Layout>
